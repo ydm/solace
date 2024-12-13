@@ -9,7 +9,6 @@ contract AliasRegistryTest is Test {
 
     function setUp() public {
         reg = new AliasRegistry();
-
     }
 
     function test_AddressToString() public view {
@@ -27,5 +26,4 @@ contract AliasRegistryTest is Test {
         reg.set(addr, "something");
         assertEq(reg.get(addr), "something");
     }
-
 }
