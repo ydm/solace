@@ -1,66 +1,34 @@
-## Foundry
+# Solace
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+Human friendly address printing in Foundry.
 
-Foundry consists of:
+### Installation
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
-
-## Documentation
-
-https://book.getfoundry.sh/
-
-## Usage
-
-### Build
-
-```shell
-$ forge build
+```
+forge install ydm/solace
 ```
 
-### Test
+### Usage
 
-```shell
-$ forge test
-```
+Use instead of the standard console.
 
-### Format
+```Solidity
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.13;
 
-```shell
-$ forge fmt
-```
+import {Test} from "forge-std/Test.sol";
+import {AliasRegistry} from "solace/src/AliasRegistry.sol";
 
-### Gas Snapshots
+contract MyTest is Test {
+    AliasRegistry public console;
 
-```shell
-$ forge snapshot
-```
+    function setUp() public {
+        console = new AliasRegistry();
+        console.set(0x70997970c51812dc3a010c7d01b50e0d17dc79c8, "some address");
+    }
 
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
+    function test() public view {
+        console.log(0x70997970c51812dc3a010c7d01b50e0d17dc79c8); // will print "some address"
+    }
+}
 ```
