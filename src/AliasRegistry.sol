@@ -11,12 +11,29 @@ contract AliasRegistry {
 
     mapping(address => string) public registry;
 
+    function addressToString(address a) public pure returns(string memory) {
+        bytes memory alnum = "0123456789abcdef";
+        bytes32 xs = bytes32(uint256(uint160(a)));
+        bytes memory zs = new bytes(42);
+        zs[0] = '0';
+        zs[1] = 'x';
+        for (uint i = 0; i < 20; i++) {
+            zs[2 + i*2 + 0] = alnum[uint8(xs[12 + i] >> 4)];
+            zs[2 + i*2 + 1] = alnum[uint8(xs[12 + i] & 0x0f)];
+        }
+        return string(zs);
+    }
+
     function set(address a, string calldata s) external {
         registry[a] = s;
     }
 
     function get(address a) public view returns(string memory) {
-        return registry[a];
+        string memory s = registry[a];
+        if (bytes(s).length == 0) {
+            return addressToString(a);
+        }
+        return s;
     }
 
     /*------------------+

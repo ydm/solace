@@ -9,14 +9,23 @@ contract AliasRegistryTest is Test {
 
     function setUp() public {
         reg = new AliasRegistry();
-        reg.set(0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266, "a");
+
     }
 
-    function test() public {
-        assertEq(reg.get(0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266), "a");
-
-        assertEq(reg.get(0x70997970C51812dc3A010C7d01b50e0d17dc79C8), "");
-        reg.set(0x70997970C51812dc3A010C7d01b50e0d17dc79C8, "b");
-        assertEq(reg.get(0x70997970C51812dc3A010C7d01b50e0d17dc79C8), "b");
+    function test_AddressToString() public view {
+        assertEq(
+            reg.addressToString(0x70997970C51812dc3A010C7d01b50e0d17dc79C8),
+            "0x70997970c51812dc3a010c7d01b50e0d17dc79c8"
+        );
     }
+
+    function test_Get() public {
+        address addr = 0x70997970C51812dc3A010C7d01b50e0d17dc79C8;
+
+        assertEq(reg.get(addr), "0x70997970c51812dc3a010c7d01b50e0d17dc79c8");
+
+        reg.set(addr, "something");
+        assertEq(reg.get(addr), "something");
+    }
+
 }
